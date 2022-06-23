@@ -1,1 +1,20 @@
 GET  http://localhost:3003/class
+
+### 
+POST http://localhost:3003/class
+Content-Type: application/json
+
+{
+    "name": "Jobs"
+}
+
+###
+GET http://localhost:3003/activeClasses
+
+### 
+PUT http://localhost:3003/classes/4
+Content-Type: application/json
+
+{
+    "module": 5
+}

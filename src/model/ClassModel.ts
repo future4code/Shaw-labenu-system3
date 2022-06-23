@@ -1,8 +1,8 @@
 export class ClassModel {
     constructor(
-        protected id: number,
-        protected name: string,
-        protected module: number
+        private name: string,
+        private module: number,
+        private id?: number
     ) { }
 
     public getName() {
@@ -11,7 +11,6 @@ export class ClassModel {
     public getModule() {
         return this.module
     }
-
     public getId() {
         return this.id
     }

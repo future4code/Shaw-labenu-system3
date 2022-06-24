@@ -24,6 +24,32 @@ Content-Type: application/json
 
 
 
+### Student ###
+
+### Pega estudante por nome.
+GET http://localhost:3003/student?name=l
+
+### Edita a turma do estudante por id.
+PUT http://localhost:3003/student/1
+Content-Type: application/json
+
+{
+    "classId": 10
+}
+
+### Cria um estudante.
+POST http://localhost:3003/student
+Content-Type: application/json
+
+{
+    "name": "userTest",
+    "email": "userTest@shaw.com",
+    "birthDate": "1",
+    "hobby":["correr"]
+}    
+ 
+
+
 ### Instructor ###
 
 ### Criar um novo instrutor.

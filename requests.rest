@@ -18,3 +18,28 @@ Content-Type: application/json
 {
     "module": 5
 }
+
+
+### Instructor ###
+
+POST http://localhost:3003/instructor
+Content-Type: application/json
+
+{
+    "name": "Matheus", 
+    "email": "matths@gmail.com", 
+    "birth_date": "2000/01/01"
+}
+
+###
+
+GET http://localhost:3003/instructors
+
+###
+
+PUT http://localhost:3003/instructor/2
+Content-Type: application/json
+
+{
+    "classId": 3
+}

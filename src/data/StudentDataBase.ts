@@ -3,76 +3,106 @@ import { BaseDataBase } from "./BaseDataBase";
 
 export class StudentDataBase extends BaseDataBase {
 
-   async getStudentByName(name:string){
-    try {
+    async getStudentByName(name: string) {
+        try {
 
-        const result = await BaseDataBase.connection("student")
-        .where("name", "like", `%${name}%`)
+            const result = await BaseDataBase.connection("student")
+                .where("name", "like", `%${name}%`)
 
-        if(!result.length){
-            throw new Error("Student not found.")
+            if (!result.length) {
+                throw new Error("Student not found.")
+            }
+
+            return result
+
+        } catch (error: any) {
+            return error.message
         }
-
-        return result
-
-    } catch (error:any) {
-        return error.message
     }
-   }
 
     async createStudent(student: StudentModel) {
-       try {
+        let errorCode: number = 400
+
+        try {
+
+            const studentsDB = await BaseDataBase.connection("student")
+                .select("email")
+                .where({ email: student.getEmail() })
+
+            if (studentsDB.length > 0) {
+                errorCode = 409
+                throw new Error("There is already a Student registered with this email address.")
+            }
+
             const hobbies = await BaseDataBase.connection("hobby")
-            
-            let studentHobbyId:number[] =[]
+
+            let studentHobbyId: number[] = []
             let studentHobbyName: string[] = student.getHobby()
+            let newStudentHobbies: string[] = []
 
-            for(const studentHobby of studentHobbyName){
-                let checkHobbies = hobbies.find((hobby:string)=> hobby.toLowerCase() === studentHobby.toLowerCase())
+            studentHobbyName.forEach((studentHobby) => {
 
-                if(checkHobbies.length > 0){
-                    studentHobbyId.push(checkHobbies.id) 
-                    const index:number = studentHobbyName.findIndex((hobby:string)=> hobby.toLowerCase() === checkHobbies.name.toLowerCase())
-                    studentHobbyName.splice(index,1)
-                } 
-            }
-
-            for(const studentHobby of studentHobbyName){
-                BaseDataBase.connection("hobby")
-                .insert({                    
-                    name: studentHobby
-                })
-            }
+                let checkHobbies = hobbies.find((hobby: {
+                    name: string,
+                    id: number
+                }) => hobby.name.toLowerCase() === studentHobby.toLowerCase())
 
 
-
-            BaseDataBase.connection("student")
-            .insert({
-                name: student.getName(),
-                email: student.getEmail(),
-                birth_date: student.getBirthDate()
+                if (checkHobbies !== undefined) {
+                    studentHobbyId.push(checkHobbies.id)
+                } else {
+                    newStudentHobbies.push(studentHobby)
+                }
             })
 
-            for(const hobbyId of studentHobbyId)
-            BaseDataBase.connection("student_hobby")
-           
-            
+            for (const studentHobby of newStudentHobbies) {
+                await BaseDataBase.connection("hobby")
+                    .insert({
+                        name: studentHobby
+                    })
+            }
 
-        
-       } catch (error:any) {
-            return error.sqlMessage
-       }
+            const updateHobbies = await BaseDataBase.connection("hobby")
+
+            newStudentHobbies.forEach((hobby) => {
+                const newHobby = updateHobbies.find((hobbyDB) => hobby.toLowerCase() === hobbyDB.name.toLowerCase())
+                newHobby !== undefined && studentHobbyId.push(newHobby.id)
+            })
+
+            await BaseDataBase.connection("student")
+                .insert({
+                    name: student.getName(),
+                    email: student.getEmail(),
+                    birth_date: student.getBirthDate()
+                })
+
+            const newStudentsDB = await BaseDataBase.connection("student")
+                .select("id")
+                .where({ email: student.getEmail() })
+
+            for (const hobbyId of studentHobbyId) {
+                await BaseDataBase.connection("student_hobby")
+                    .insert({
+                        student_id: newStudentsDB[0].id,
+                        hobby_id: hobbyId,
+                    })
+            }
+
+            return [201, "Student succefully registered."]
+        } catch (error: any) {
+            return [errorCode, error.message]
+        }
     }
 
-    async updateStudentClass(studentId:number, newClassId:number){
+    async updateStudentClass(studentId: number, newClassId: number) {
         try {
             await BaseDataBase.connection("student")
-            .update({class_id: newClassId})
-            .where({id: studentId})
+                .update({ class_id: newClassId })
+                .where({ id: studentId })
 
-            return "Student's Class succefully updated."
-        } catch (error:any) {
-            return error.sqlMessage
+            return [200, "Student's Class succefully updated."]
+        } catch (error: any) {
+            return [400, error.sqlMessage]
         }
     }
 }

@@ -5,11 +5,11 @@ export class StudentModel extends Users{
         protected name: string,
         protected email: string,
         protected birthDate: string,
-        protected classId: number,
+        // protected classId: number,
         private hobby: string[]
         
     ) {
-        super(name, email, birthDate, classId)
+        super(name, email, birthDate)
      }
 
     public getHobby() {

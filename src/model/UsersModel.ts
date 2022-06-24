@@ -3,16 +3,20 @@ export class Users {
         protected name: string,
         protected email: string,
         protected birthDate: string,
-        protected classId: number
+        // protected classId: number
     ) { }
 
-    public getUsersInfo() {
-        return {
-            name: this.name,
-            email: this.email,
-            birthDate: this.birthDate,
-            classId: this.classId
-        }
+    public getName(){
+        return this.name
     }
+    public getEmail(){
+        return this.email
+    }
+    public getBirthDate(){
+        return this.birthDate
+    }
+    // public getClassId(){
+    //     return this.classId
+    // }
 }
 

@@ -4,6 +4,7 @@ import { createNewClass } from "./endpoints/createNewClass"
 import { getActiveClasses } from "./endpoints/getActiveClasses";
 import { changeClassModule } from "./endpoints/changeClassModule";
 import StudentControler from "./endpoints/StudentControler";
+import { InstructorController } from "./endpoints/InstructorController";
 
 //-- getAllClasses --//
 app.get("/class", getAllClasses)
@@ -15,11 +16,19 @@ app.get("/activeClasses", getActiveClasses)
 app.put("/classes/:id", changeClassModule)
 
 
-
-
 // student endpoints
 const studentControler = new StudentControler()
 app.get("/student", studentControler.getStudent)
 app.post("/student", studentControler.createStudent)
 app.put("/student/:studentId", studentControler.updateStudentClass)
 
+
+/* INSTRUCTOR */
+
+const instructorController = new InstructorController()
+
+app.post("/instructor", instructorController.postCreateInstructor)
+
+app.get("/instructors", instructorController.getAllInstructor)
+
+app.put("/instructor/:id", instructorController.putChangeInstructorClass)

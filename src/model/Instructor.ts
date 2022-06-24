@@ -2,7 +2,8 @@ export class Instructor{
     constructor(
         private name: string, 
         private email: string, 
-        private birth_date: string
+        private birthDate: string,
+        private skills: string[]
     ){ }
 
     public getName(){
@@ -14,6 +15,10 @@ export class Instructor{
     }
 
     public getBirth_Date(){
-        return this.birth_date
+        return this.birthDate
+    }
+
+    public getSkills(){
+        return this.skills
     }
 }

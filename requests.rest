@@ -30,7 +30,7 @@ PUT http://localhost:3003/student/1
 Content-Type: application/json
 
 {
-    "classId":10
+    "classId":12
 }
 
 ###

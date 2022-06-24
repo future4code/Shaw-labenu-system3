@@ -95,14 +95,25 @@ export class StudentDataBase extends BaseDataBase {
     }
 
     async updateStudentClass(studentId: number, newClassId: number) {
+        let errorCode = 400
         try {
+
+            const checkClass = await BaseDataBase.connection("class")
+                .select("*")
+                .where({ id: newClassId })
+
+            if (checkClass.length === 0) {
+                errorCode = 404
+                throw new Error("Class not registered.")
+            }
+
             await BaseDataBase.connection("student")
                 .update({ class_id: newClassId })
                 .where({ id: studentId })
 
             return [200, "Student's Class succefully updated."]
         } catch (error: any) {
-            return [400, error.sqlMessage]
+            return [errorCode, error.message]
         }
     }
 }

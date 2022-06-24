@@ -1,6 +1,9 @@
+### Class ###
+
+### Pega todas as classes.
 GET  http://localhost:3003/class
 
-### 
+### Criar nova turma.
 POST http://localhost:3003/class
 Content-Type: application/json
 
@@ -8,10 +11,10 @@ Content-Type: application/json
     "name": "Jobs"
 }
 
-###
+### Pega todas as turmas ativas.
 GET http://localhost:3003/activeClasses
 
-### 
+### Edita o módulo por id.
 PUT http://localhost:3003/classes/4
 Content-Type: application/json
 
@@ -23,18 +26,18 @@ Content-Type: application/json
 
 ### Student ###
 
-###
+### Pega estudante por nome.
 GET http://localhost:3003/student?name=l
 
-###
+### Edita a turma do estudante por id.
 PUT http://localhost:3003/student/1
 Content-Type: application/json
 
 {
-    "classId":10
+    "classId": 10
 }
 
-###
+### Cria um estudante.
 POST http://localhost:3003/student
 Content-Type: application/json
 
@@ -49,24 +52,24 @@ Content-Type: application/json
 
 ### Instructor ###
 
+### Criar um novo instrutor.
 POST http://localhost:3003/instructor
 Content-Type: application/json
 
 {
-    "name": "Matheus", 
-    "email": "matths@gmail.com", 
-    "birth_date": "2000/01/01"
+    "name": "Testee", 
+    "email": "Tasdasdsdase@gmail.com", 
+    "birthDate": "2000/12/12",
+    "skills": ["OOP"]
 }
 
-###
-
+### Pegar todos os instrutores.
 GET http://localhost:3003/instructors
 
-###
-
+### Mudar instrutor de turma.
 PUT http://localhost:3003/instructor/2
 Content-Type: application/json
 
 {
-    "classId": 3
+    "classId": 4
 }

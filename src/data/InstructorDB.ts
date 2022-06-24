@@ -18,7 +18,6 @@ export class InstructorDB extends BaseDataBase{
         const result = await BaseDataBase.connection("instructor")
         .select("*")
 
-        console.log(result)
         return result
     }
 
@@ -26,6 +25,6 @@ export class InstructorDB extends BaseDataBase{
     async changeInstructorClass(id: number, classId: number){
         await BaseDataBase.connection("instructor")
         .update({ class_id: classId })
-        .where("id", id)
+        .where({ id: id })
     }
 }

@@ -8,14 +8,62 @@ export class InstructorController{
     async postCreateInstructor(req: Request, res: Response){
 
         try {
-            const { name, email, birth_date } = req.body
+            const { name, email, birthDate, skills } = req.body
 
-            if(!name || !email || !birth_date){
+            if(!name || !email || !birthDate || !skills){
                 res.statusCode = 422
                 throw new Error("All fields are mandatory.")
             }
 
-            const instructor = new Instructor(name, email, birth_date)
+            if(typeof name !== "string" ){
+                res.statusCode = 422
+                throw new Error("The 'name' field must be of type string.")
+            }
+            if(typeof email !== "string" ){
+                res.statusCode = 422
+                throw new Error("The 'email' field must be of type string.")
+            }
+            if(typeof birthDate !== "string" ){
+                res.statusCode = 422
+                throw new Error("The 'birth date' field must be of type string.")
+            }
+            if(birthDate.length !== 10){
+                res.statusCode = 422
+                throw new Error("Check if the date format is correct (DD/MM/AAAA) or if its values are valid.")
+            }
+            if(Array.isArray(skills) === false){
+                res.statusCode = 422
+                throw new Error("The 'skills' field must be a string array type.")
+            }
+            if(Array.isArray(skills) === true){
+                const verification = skills.find((skill:any) => {typeof skill !== "string"})
+                if(verification !== undefined){
+                    throw new Error("The 'skills' field must be a string array type.")
+                }
+            }
+
+            if(skills.length === 0){
+                res.statusCode = 422
+                throw new Error("The 'skills' field must contain at least one skill.")
+            }
+            if(skills.length !== 0){
+                const verification = skills.filter((element: string) => {
+                    return (
+                        element.toUpperCase() === "JS" || 
+                        element.toUpperCase() === "CSS" || 
+                        element.toUpperCase() === "REACT" || 
+                        element.toUpperCase() === "TYPESCRIPT" || 
+                        element.toUpperCase() === "OOP"
+                    )
+                })
+                
+                if(verification.length === 0){
+                    res.statusCode = 422
+                    throw new Error("The 'skills' field must contain at least one of the following skills: JS, CSS, React, Typescript, OOP.")
+                }
+            }
+
+            const instructor = new Instructor(name, email, birthDate, skills)
 
             const insertInstructor = new InstructorDB
             insertInstructor.insertInstructor(instructor)
@@ -23,7 +71,7 @@ export class InstructorController{
             res.status(201).send("Instructor created successfully.")
 
         } catch (error:any) {
-            res.status(500).send({ message: error.message })
+            res.send(error.slqMessage || error.message)
         }
     }
 

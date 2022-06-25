@@ -1,22 +1,16 @@
 import { InstructorModel } from "../model/Instructor";
 import { BaseDataBase } from "./BaseDataBase";
+import { instructorSkill, Skill } from "../types"
+import { ClassModel } from "../model/ClassModel";
 
-type instructorSkill = {
-    id: number,
-    name: string,
-    email: string,
-    birthDate: Date,
-    classId: number,
-    skill: string[]
-}
 export class InstructorDB extends BaseDataBase {
 
     // Inseri os dados do novo instrutor no banco de dados.
     async insertInstructor(instructor: InstructorModel) {
-        let errorCode = 500
+        let errorCode: number = 500
         try {
 
-            const instructorDb = await BaseDataBase.connection("instructor")
+            const instructorDb: InstructorModel[] = await BaseDataBase.connection("instructor")
                 .select("email")
                 .where({ email: instructor.getEmail() })
 
@@ -25,11 +19,9 @@ export class InstructorDB extends BaseDataBase {
                 throw new Error("There is already a Instructor registered with this email address.")
             }
 
-            const skills = await BaseDataBase.connection("skill")
+            const skills: Skill[] = await BaseDataBase.connection("skill")
 
             let instructorSkillById: number[] = []
-
-
 
             let checkSkills: string[] = instructor.getSkills()
 
@@ -45,18 +37,14 @@ export class InstructorDB extends BaseDataBase {
 
             let newInstructorSkill: string[] = []
 
-            instructorSkillByName.forEach((instructorSkill) => {
+            instructorSkillByName.forEach((instructorSkill: string) => {
 
-                let checkSkills = skills.find((skill: {
-                    id: number,
-                    name: string
-                }) => skill.name.toLowerCase() === instructorSkill.toLowerCase())
+                let checkSkills: Skill | undefined = skills.find(
+                    (skill: Skill) => skill.name.toLowerCase() === instructorSkill.toLowerCase()
+                )
 
-                if (checkSkills !== undefined) {
-                    instructorSkillById.push(checkSkills.id)
-                } else {
-                    newInstructorSkill.push(instructorSkill)
-                }
+                checkSkills !== undefined ?
+                    instructorSkillById.push(checkSkills.id) : newInstructorSkill.push(instructorSkill);
             })
 
             for (const instructorSkill of newInstructorSkill) {
@@ -66,10 +54,13 @@ export class InstructorDB extends BaseDataBase {
                     })
             }
 
-            const updateSkills = await BaseDataBase.connection("skill")
+            const updateSkills: Skill[] = await BaseDataBase.connection("skill")
 
-            newInstructorSkill.forEach((skill) => {
-                const newSkill = updateSkills.find((skillDB) => skill.toLowerCase() === skillDB.name.toLowerCase())
+            newInstructorSkill.forEach((skill: string) => {
+                const newSkill: Skill | undefined =
+                    updateSkills.find(
+                        (skillDB: Skill) => skill.toLowerCase() === skillDB.name.toLowerCase()
+                    )
                 newSkill !== undefined && instructorSkillById.push(newSkill.id)
             })
 
@@ -80,7 +71,7 @@ export class InstructorDB extends BaseDataBase {
                     birth_date: instructor.getBirthDate()
                 })
 
-            const newInstructorDB = await BaseDataBase.connection("instructor")
+            const newInstructorDB: instructorSkill[] = await BaseDataBase.connection("instructor")
                 .select("id")
                 .where({ email: instructor.getEmail() })
 
@@ -102,8 +93,10 @@ export class InstructorDB extends BaseDataBase {
     // Retorna os dados dos instrutores no banco de dados.
     async selectAllInstructor() {
         try {
-            const result = await BaseDataBase.connection("instructor")
-                .select("*")
+
+            const result: instructorSkill[] = await BaseDataBase.connection("instructor")
+                .select("name", "id", "email", "class_id as classID", "birth_date as birthDate")
+
             if (!result.length) {
                 throw new Error("Instructor not found.")
             }
@@ -111,7 +104,7 @@ export class InstructorDB extends BaseDataBase {
             const response: Array<instructorSkill> = []
 
             for (const instructor of result) {
-                const skills = await BaseDataBase.connection("instructor")
+                const skills: Array<instructorSkill> = await BaseDataBase.connection("instructor")
                     .join('instructor_skill', 'instructor_skill.instructor_id', 'instructor.id')
                     .join('skill', 'instructor_skill.skill_id', 'skill.id')
                     .select('skill.name')
@@ -125,8 +118,8 @@ export class InstructorDB extends BaseDataBase {
                     id: instructor.id,
                     name: instructor.name,
                     email: instructor.email,
-                    birthDate: instructor.birth_date,
-                    classId: instructor.class_id,
+                    birthDate: instructor.birthDate,
+                    classId: instructor.classId,
                     skill: instructorsSkills
                 })
             }
@@ -140,8 +133,33 @@ export class InstructorDB extends BaseDataBase {
 
     // Aloca o instrutor para uma nova turma.
     async changeInstructorClass(id: number, classId: number) {
-        await BaseDataBase.connection("instructor")
-            .update({ class_id: classId })
-            .where({ id: id })
+        let errorCode = 500
+        try {
+            const checkClassId: ClassModel[] = await BaseDataBase.connection("class")
+                .select("*")
+                .where({ id: classId })
+
+            if (checkClassId.length === 0) {
+                errorCode = 404
+                throw new Error("ClassId not registered.")
+            }
+
+            const checkInstructorId: InstructorModel[] = await BaseDataBase.connection("instructor")
+                .select("*")
+                .where({ id: id })
+
+            if (checkInstructorId.length === 0) {
+                errorCode = 404
+                throw new Error("InstructorId not registered.")
+            }
+
+            await BaseDataBase.connection("instructor")
+                .update({ class_id: classId })
+                .where({ id: id })
+
+            return [200, "Instructor's class succefully updated."]
+        } catch (error: any) {
+            return [errorCode, error.message]
+        }
     }
 }

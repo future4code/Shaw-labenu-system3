@@ -29,7 +29,7 @@ export default class StudentControler {
 
             if (!name || !email || !birthDate || !hobby) {
                 errorCode = 422
-                throw new Error("All fields are mandatory.")
+                throw new Error("All fields are required.")
             }
             if (typeof name !== "string") {
                 errorCode = 422
@@ -87,7 +87,7 @@ export default class StudentControler {
 
             if (!classId) {
                 errorCode = 422
-                throw new Error("The 'classId' field is mandatory..")
+                throw new Error("The 'classId' field is required.")
             }
 
             if (typeof classId !== "number") {

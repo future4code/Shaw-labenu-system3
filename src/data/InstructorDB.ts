@@ -1,19 +1,28 @@
 import { InstructorModel } from "../model/Instructor";
 import { BaseDataBase } from "./BaseDataBase";
 
+type instructorSkill = {
+    id: number,
+    name: string,
+    email: string,
+    birthDate: Date,
+    classId: number,
+    skill: string[]
+}
 export class InstructorDB extends BaseDataBase {
 
     // Inseri os dados do novo instrutor no banco de dados.
     async insertInstructor(instructor: InstructorModel) {
         let errorCode = 500
         try {
-            const instructorDB = await BaseDataBase.connection("student")
+
+            const instructorDb = await BaseDataBase.connection("instructor")
                 .select("email")
                 .where({ email: instructor.getEmail() })
 
-            if (instructorDB.length > 0) {
+            if (instructorDb.length > 0) {
                 errorCode = 409
-                throw new Error("There is already a Student registered with this email address.")
+                throw new Error("There is already a Instructor registered with this email address.")
             }
 
             const skills = await BaseDataBase.connection("skill")
@@ -34,12 +43,7 @@ export class InstructorDB extends BaseDataBase {
                 )
             })
 
-            console.log(instructorSkillByName)
-
-
-
             let newInstructorSkill: string[] = []
-
 
             instructorSkillByName.forEach((instructorSkill) => {
 
@@ -88,7 +92,7 @@ export class InstructorDB extends BaseDataBase {
                     })
             }
 
-            return [201, "Student succefully registered."]
+            return [201, "Instructor succefully registered."]
         } catch (error: any) {
             return [errorCode, error.message]
         }
@@ -97,9 +101,41 @@ export class InstructorDB extends BaseDataBase {
 
     // Retorna os dados dos instrutores no banco de dados.
     async selectAllInstructor() {
-        const result = await BaseDataBase.connection("instructor")
-            .select("*")
-        return result
+        try {
+            const result = await BaseDataBase.connection("instructor")
+                .select("*")
+            if (!result.length) {
+                throw new Error("Instructor not found.")
+            }
+
+            const response: Array<instructorSkill> = []
+
+            for (const instructor of result) {
+                const skills = await BaseDataBase.connection("instructor")
+                    .join('instructor_skill', 'instructor_skill.instructor_id', 'instructor.id')
+                    .join('skill', 'instructor_skill.skill_id', 'skill.id')
+                    .select('skill.name')
+                    .where({ instructor_id: instructor.id })
+
+                const instructorsSkills = skills.map((skill) => {
+                    return skill.name
+                })
+
+                response.push({
+                    id: instructor.id,
+                    name: instructor.name,
+                    email: instructor.email,
+                    birthDate: instructor.birth_date,
+                    classId: instructor.class_id,
+                    skill: instructorsSkills
+                })
+            }
+
+            return response
+        } catch (error: any) {
+            return error.message
+        }
+
     }
 
     // Aloca o instrutor para uma nova turma.

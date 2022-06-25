@@ -15,11 +15,11 @@ Content-Type: application/json
 GET http://localhost:3003/activeClasses
 
 ### Edita o módulo por id.
-PUT http://localhost:3003/classes/9
+PUT http://localhost:3003/classes/10
 Content-Type: application/json
 
 {
-    "module": 2
+    "module": 5
 }
 
 
@@ -34,7 +34,7 @@ PUT http://localhost:3003/student/194
 Content-Type: application/json
 
 {
-    "classId": 10
+    "classId": 12
 }
 
 ### Cria um estudante.
@@ -43,7 +43,7 @@ Content-Type: application/json
 
 {
     "name": "userTest",
-    "email": "userTest5@shaw.com",
+    "email": "userTest12@shaw.com",
     "birthDate": "10/10/1995",
     "hobby":["correr"]
 }    
@@ -58,7 +58,7 @@ Content-Type: application/json
 
 {
     "name": "Teste 4000", 
-    "email": "244466asd6666@gmail.com", 
+    "email": "2444a66asd6666@gmail.com", 
     "birthDate": "2005/12/12",
     "skills": ["OOP", "Typescript", "nonono"]
 }

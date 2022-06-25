@@ -4,10 +4,9 @@
   "description": "Você estuda na Labenu_ há tanto tempo que já parecem anos, não é? Então, hoje, vamos pedir para criar um sistema que represente o básico da nossa organização.",
   "main": "index.js",
   "scripts": {
-    "start": "clear && tsc && node ./build/index.js",
+    "start": "tsc && node ./build/index.js",
     "dev": "ts-node-dev ./src/index.ts",
-    "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -32,6 +31,7 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "knex": "^2.1.0",
+    "moment": "^2.29.3",
     "mysql": "^2.18.1"
   }
 }

@@ -66,9 +66,9 @@ export class InstructorController {
             const instructor = new InstructorModel(name, email, birthDate, skills)
 
             const insertInstructor = new InstructorDB
-            insertInstructor.insertInstructor(instructor)
+            const [code, message] = await insertInstructor.insertInstructor(instructor)
 
-            res.status(201).send("Instructor created successfully.")
+            res.status(code).send(message)
 
         } catch (error: any) {
             res.send(error.slqMessage || error.message)
@@ -79,7 +79,7 @@ export class InstructorController {
     async getAllInstructor(req: Request, res: Response) {
 
         try {
-            const selectInstructor = new InstructorDB
+            const selectInstructor = new InstructorDB()
             const result = await selectInstructor.selectAllInstructor()
 
             res.status(200).send(result)

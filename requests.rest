@@ -57,10 +57,10 @@ POST http://localhost:3003/instructor
 Content-Type: application/json
 
 {
-    "name": "Testee", 
-    "email": "Tasdasdsdase@gmail.com", 
-    "birthDate": "2000/12/12",
-    "skills": ["OOP"]
+    "name": "Teste 4000", 
+    "email": "244466asd6666@gmail.com", 
+    "birthDate": "2005/12/12",
+    "skills": ["OOP", "Typescript", "nonono"]
 }
 
 ### Pegar todos os instrutores.

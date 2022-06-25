@@ -79,7 +79,7 @@ export class StudentDataBase extends BaseDataBase {
             const newStudentsDB = await BaseDataBase.connection("student")
                 .select("id")
                 .where({ email: student.getEmail() })
-
+ 
             for (const hobbyId of studentHobbyId) {
                 await BaseDataBase.connection("student_hobby")
                     .insert({

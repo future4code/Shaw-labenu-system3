@@ -1,24 +1,14 @@
-export class Instructor{
+import { Users } from "./UsersModel"
+
+export class InstructorModel extends Users {
     constructor(
-        private name: string, 
-        private email: string, 
-        private birthDate: string,
-        private skills: string[]
-    ){ }
+        name: string,
+        email: string,
+        birthDate: string,
+        protected skills: string[]
+    ) { super(name, email, birthDate) }
 
-    public getName(){
-        return this.name
-    }
-
-    public getEmail(){
-        return this.email
-    }
-
-    public getBirth_Date(){
-        return this.birthDate
-    }
-
-    public getSkills(){
+    public getSkills() {
         return this.skills
     }
 }

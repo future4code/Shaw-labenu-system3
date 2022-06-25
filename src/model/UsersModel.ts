@@ -1,10 +1,14 @@
 export class Users {
+
+    protected classId: number
+
     constructor(
         protected name: string,
         protected email: string,
-        protected birthDate: string,
-        // protected classId: number
-    ) { }
+        protected birthDate: string        
+    ) { 
+        this.classId = 0
+    }
 
     public getName(){
         return this.name
@@ -15,8 +19,8 @@ export class Users {
     public getBirthDate(){
         return this.birthDate
     }
-    // public getClassId(){
-    //     return this.classId
-    // }
+    public getClassId(){
+        return this.classId
+    }
 }
 

@@ -1,19 +1,53 @@
 import { StudentModel } from "../model/StudentModel";
 import { BaseDataBase } from "./BaseDataBase";
 
-export class StudentDataBase extends BaseDataBase {
+type Student = {
+    id: number,
+    name: string,
+    email: string,
+    birthDate: Date,
+    classId: number,
+    hobby: string[]
+}
 
+export class StudentDataBase extends BaseDataBase {
     async getStudentByName(name: string) {
+
         try {
 
             const result = await BaseDataBase.connection("student")
+                .select("*")
                 .where("name", "like", `%${name}%`)
 
             if (!result.length) {
                 throw new Error("Student not found.")
             }
 
-            return result
+            let response: Array<Student> = []
+
+            for (const student of result) {
+
+                const hobbies = await BaseDataBase.connection("student")
+                    .join('student_hobby', 'student_hobby.student_id', 'student.id')
+                    .join('hobby', 'student_hobby.hobby_id', 'hobby.id')
+                    .select('hobby.name')
+                    .where({ student_id: student.id })
+
+                const hobbiesStudent = hobbies.map((hobby) => {
+                    return hobby.name
+                })
+
+                response.push({
+                    id: student.id,
+                    name: student.name,
+                    email: student.email,
+                    birthDate: student.birth_date,
+                    classId: student.class_id,
+                    hobby: hobbiesStudent
+                })
+            }
+            return response
+
 
         } catch (error: any) {
             return error.message
@@ -42,10 +76,7 @@ export class StudentDataBase extends BaseDataBase {
 
             studentHobbyName.forEach((studentHobby) => {
 
-                let checkHobbies = hobbies.find((hobby: {
-                    name: string,
-                    id: number
-                }) => hobby.name.toLowerCase() === studentHobby.toLowerCase())
+                let checkHobbies = hobbies.find((hobby) => hobby.name.toLowerCase() === studentHobby.toLowerCase())
 
 
                 if (checkHobbies !== undefined) {

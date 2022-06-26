@@ -1,33 +1,45 @@
-## LabenuSystem:
+# LabenuSystem
 
-Você estuda na Labenu_ há tanto tempo que já parecem anos, não é? Então, hoje, vamos pedir para criar um sistema que represente o básico da nossa organização. 
+Projeto proposto pela instituição Labenu.
+Sistema que represente o básico da organização.
 
-Ele deve possuir, ao menos, as 3 entidades importantes:
+Possui 3 entidades importantes:
 
-1. Estudantes 
+ 1. Estudantes
 
-    Representa estudantes da nossa instituição. Eles devem possuir: id, nome, email, data de nascimento e os principais hobbies dele. 
+       Todo estudante é composto das seguintes características: id, nome, email, data de aniversário, id da turma, e os principais hobbies dele.
+
+ 2. Docente
+
+       Todo docente é composto das seguintes características: id, nome, email, data de aniversário, id da turma, e todas as especialidades dele. Há 5 especialidades: JS, CSS, React, Typescript, OOP (Programação orientada a objetos).
+
+ 3. Turma
+ 
+       Toda turma é composta das seguintes características: id, nome e módulo.
+
+
+## Funcionalidades
+
+1. Estudante
+    - Criar estudante;
+    - Buscar estudante por nome;
+    - Mudar estudante de turma.
 
 2. Docente
-
-    Representa docentes da nossa instituição. Eles devem possuir: id, nome, email, data de nascimento e todas as especialidades dele. Há 7 especialidades: React, Redux, CSS, Testes, Typescript, Programação Orientada a Objetos e Backend
+    - Criar docente;
+    - Buscar todos os docentes;
+    - Mudar docente de turma.
 
 3. Turma
+    - Criar turma;
+    - Buscar turmas ativas;
+    - Mudar turma de módulo.
 
-    Toda turma é composta das seguintes características: id, nome, data de início, data de término, lista de professores responsáveis, uma lista de alunos e módulo atual em que a turma está.
+## Documentação
 
-    O módulo pode assumir os valores de 1 a 7 ou `undefined`, indicando que as aulas dessa turma ainda não começaram. Para esse exercício, vamos considerar que existam dois tipos de turma: integral ou noturna. Há uma restrição para o nome das turmas noturnas: tem que terminar com `-na-night`.
+[Clique para acessar a documentação.](https://documenter.getpostman.com/view/20355093/UzBsHPxC#intro)
 
-As funcionalidades básicas são:
+## DEV's
 
-→ Criar estudante;
-
-→ Criar docente;
-
-→ Criar turma;
-
-→ Adicionar estudante na turma;
-
-→ Adicionar docente na turma;
-
-→ Pegar a idade de algum estudante a partir do id
+| [<img src="https://avatars.githubusercontent.com/u/98998030?v=4" width=115><br><sub>Matheus Martinelle Barros</sub>](https://github.com/MatthsMB) | [<img src="https://avatars.githubusercontent.com/u/50851374?v=4" width=115><br><sub>Layane Bastos Juvito</sub>](https://github.com/LayaneB) | [<img src="https://avatars.githubusercontent.com/u/99135090?v=4" width=115><br><sub>Sérgio Pereira Dias Júnior</sub>](https://github.com/Sergiopdias) |  
+| :---: | :---: | :---: |

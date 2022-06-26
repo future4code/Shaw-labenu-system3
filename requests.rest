@@ -1,10 +1,10 @@
 ### Class ###
 
 ### Pega todas as classes.
-GET  http://localhost:3003/class
+GET  https://labe-system-shaw3.herokuapp.com/class
 
 ### Criar nova turma.
-POST http://localhost:3003/class
+POST https://labe-system-shaw3.herokuapp.com/class
 Content-Type: application/json
 
 {
@@ -12,10 +12,10 @@ Content-Type: application/json
 }
 
 ### Pega todas as turmas ativas.
-GET http://localhost:3003/activeClasses
+GET https://labe-system-shaw3.herokuapp.com/activeClasses
 
 ### Edita o módulo por id.
-PUT http://localhost:3003/classes/10
+PUT https://labe-system-shaw3.herokuapp.com/classes/10
 Content-Type: application/json
 
 {
@@ -27,10 +27,10 @@ Content-Type: application/json
 ### Student ###
 
 ### Pega estudante por nome.
-GET http://localhost:3003/student?name=la
+GET https://labe-system-shaw3.herokuapp.com/student?name=la
 
 ### Edita a turma do estudante por id.
-PUT http://localhost:3003/student/194
+PUT https://labe-system-shaw3.herokuapp.com/student/194
 Content-Type: application/json
 
 {
@@ -38,7 +38,7 @@ Content-Type: application/json
 }
 
 ### Cria um estudante.
-POST http://localhost:3003/student
+POST https://labe-system-shaw3.herokuapp.com/student
 Content-Type: application/json
 
 {
@@ -53,7 +53,7 @@ Content-Type: application/json
 ### Instructor ###
 
 ### Criar um novo instrutor.
-POST http://localhost:3003/instructor
+POST https://labe-system-shaw3.herokuapp.com/instructor
 Content-Type: application/json
 
 {
@@ -64,10 +64,10 @@ Content-Type: application/json
 }
 
 ### Pegar todos os instrutores.
-GET http://localhost:3003/instructors
+GET https://labe-system-shaw3.herokuapp.com/instructors
 
 ### Mudar instrutor de turma.
-PUT http://localhost:3003/instructor/10
+PUT https://labe-system-shaw3.herokuapp.com/instructor/10
 Content-Type: application/json
 
 {

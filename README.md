@@ -1,4 +1,4 @@
-# LabenuSystem
+# LabenuSystem da Labenu
 
 Projeto proposto pela instituição Labenu.
 Sistema que represente o básico da organização.
